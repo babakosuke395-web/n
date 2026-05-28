@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <!-- スマホでも正しく表示されるよう設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動物人格診断</title>
+
+  <!-- Google Fonts：文学的な雰囲気のフォントを読み込む -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+
+  <!-- スタイルシートを読み込む -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!--
+    ===================================
+    スタート画面
+    ===================================
+    id="start" で JavaScript から操作できる。
+    class="screen active" で「今表示している画面」であることを示す。
+    .active が付いている画面だけが表示される（CSS で制御）。
+  -->
+  <section id="start" class="screen active">
+    <div class="container">
+      <p class="eyebrow">標本 No.001</p>
+      <h1 class="title">動物人格診断</h1>
+      <p class="subtitle">
+        あなたの内側にある、動物の気配を探ります。
+      </p>
+      <p class="note">
+        12の質問に答えてください。<br>
+        正解はありません。直感で選んでください。
+      </p>
+      <!-- このボタンを押すと診断が始まる。script.js でクリックを検知する。 -->
+      <button id="startBtn" class="btn">はじめる</button>
+    </div>
+  </section>
+
+  <!--
+    ===================================
+    質問画面
+    ===================================
+    最初は非表示（.active がない）。
+    JavaScript が .active を付け替えることで表示・非表示を切り替える。
+  -->
+  <section id="quiz" class="screen">
+    <div class="container">
+      <!-- 「Q3 / 12」のような進捗を表示する部分 -->
+      <p id="questionNumber" class="question-number"></p>
+
+      <!-- 質問文を表示する部分（内容は JavaScript が書き換える） -->
+      <p id="questionText" class="question-text"></p>
+
+      <!-- 回答ボタンを並べる部分（ボタンは JavaScript が動的に生成する） -->
+      <div id="answerOptions" class="answer-options"></div>
+    </div>
+  </section>
+
+  <!--
+    ===================================
+    結果画面
+    ===================================
+    診断が終わったら JavaScript が .active を付ける。
+  -->
+  <section id="result" class="screen">
+    <div class="container">
+      <p class="result-label">あなたは</p>
+
+      <!-- 診断タイプ名（「月猫」など）が入る -->
+      <h2 id="resultType" class="result-type"></h2>
+
+      <!-- 一言コピー（「理解されたい。でも——」など）が入る -->
+      <p id="resultCopy" class="result-copy"></p>
+
+      <!-- 詳細説明のセクション群 -->
+      <div class="result-details">
+
+        <div class="result-section">
+          <h3 class="section-heading">特徴</h3>
+          <p id="resultDescription"></p>
+        </div>
+
+        <div class="result-section">
+          <h3 class="section-heading">他人からの見え方</h3>
+          <p id="resultOthers"></p>
+        </div>
+
+        <div class="result-section">
+          <h3 class="section-heading">本人とのズレ</h3>
+          <p id="resultGap"></p>
+        </div>
+
+      </div>
+
+      <!-- もう一度やるボタン -->
+      <button id="retryBtn" class="btn btn-secondary">もう一度やる</button>
+    </div>
+  </section>
+
+  <!-- JavaScript を読み込む（bodyの末尾に置くことで、HTMLが先に読み込まれる） -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+/*
+  ===================================
+  style.css の役割
+  ===================================
+  HTML に「見た目」を与えるファイル。
+  色、フォント、余白、レイアウト、アニメーションをここで定義する。
+  「静かな人格標本館」という世界観を CSS で表現している。
+*/
+
+/* ===================================
+   リセット & 基本設定
+   =================================== */
+
+/* ブラウザごとのデフォルトスタイルの差をなくす */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+  :root は「CSS変数」を定義する場所。
+  色や数値を変数にしておくと、後から一箇所変えるだけで全体に反映できる。
+  例：黒背景の色を変えたいなら --color-bg を変えるだけでよい。
+*/
+:root {
+  --color-bg:         #080c12;  /* メイン背景：深夜の空のような黒 */
+  --color-bg-alt:     #0d1320;  /* サブ背景：ほんの少し明るい黒 */
+  --color-text:       #b8cdd8;  /* メインテキスト：青白い */
+  --color-text-muted: #5a7a8a;  /* サブテキスト：落ち着いたグレー */
+  --color-accent:     #e4edf2;  /* 強調テキスト：ほぼ白 */
+  --color-border:     #1e2f3a;  /* ボーダー：控えめな暗い青 */
+  --color-hover:      #2a4050;  /* ホバー時の背景 */
+
+  --font-serif: 'Noto Serif JP', Georgia, serif;   /* 見出し用：文学的な雰囲気 */
+  --font-sans:  'Noto Sans JP', sans-serif;        /* 本文用：読みやすい */
+
+  --spacing-xs:  0.5rem;
+  --spacing-sm:  1rem;
+  --spacing-md:  2rem;
+  --spacing-lg:  3.5rem;
+  --spacing-xl:  5rem;
+
+  --transition: 0.4s ease;  /* アニメーションの速さ・イージング */
+}
+
+/* ===================================
+   全体レイアウト
+   =================================== */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+
+  /* 縦方向にコンテンツを中央寄せ */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* ===================================
+   画面の切り替え
+   =================================== */
+
+/*
+  .screen は各「画面」（スタート・質問・結果）の共通クラス。
+  デフォルトは非表示（opacity: 0）。
+  .active クラスが付いた画面だけが見える。
+  JavaScript が .active を付け替えることで画面を切り替える。
+*/
+.screen {
+  display: none;
+  opacity: 0;
+  width: 100%;
+  min-height: 100vh;
+  padding: var(--spacing-xl) var(--spacing-md);
+
+  /* フェードインアニメーション用 */
+  transition: opacity var(--transition);
+}
+
+/* .active が付いた画面を表示する */
+.screen.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* フェードインクラス（JavaScript が少し遅れて付ける） */
+.screen.fade-in {
+  opacity: 1;
+}
+
+/* ===================================
+   コンテナ（中央揃えの箱）
+   =================================== */
+
+.container {
+  width: 100%;
+  max-width: 620px;  /* PC では最大620px で読みやすく */
+  margin: 0 auto;
+  padding: var(--spacing-lg) 0;
+}
+
+/* ===================================
+   スタート画面
+   =================================== */
+
+/* 「標本 No.001」のような小さな見出し */
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-md);
+}
+
+/* タイトル「動物人格診断」 */
+.title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);  /* 画面幅に応じてフォントサイズが変わる */
+  color: var(--color-accent);
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--spacing-md);
+}
+
+/* サブタイトル */
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-lg);
+  line-height: 2;
+}
+
+/* 補足テキスト（「12の質問に答えてください」など） */
+.note {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 2.2;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ===================================
+   ボタン
+   =================================== */
+
+/*
+  .btn はメインのボタンスタイル。
+  背景は透明で、ボーダーだけで輪郭を表現する（ミニマルなデザイン）。
+*/
+.btn {
+  display: inline-block;
+  padding: 0.8em 2.5em;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  outline: none;
+  appearance: none;
+}
+
+.btn:hover {
+  background: var(--color-hover);
+  border-color: var(--color-text-muted);
+  color: var(--color-accent);
+}
+
+/* セカンダリボタン（もう一度やる） */
+.btn-secondary {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  border-color: var(--color-bg-alt);
+  margin-top: var(--spacing-lg);
+}
+
+.btn-secondary:hover {
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background: transparent;
+}
+
+/* ===================================
+   質問画面
+   =================================== */
+
+/* 「Q3 / 12」の進捗表示 */
+.question-number {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* 質問文 */
+.question-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-weight: 300;
+  color: var(--color-accent);
+  line-height: 1.9;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-lg);
+  min-height: 3.5em;  /* 質問が切り替わっても高さが急に変わらないよう */
+}
+
+/* 回答ボタンが並ぶコンテナ */
+.answer-options {
+  display: flex;
+  flex-direction: column;  /* ボタンを縦に並べる */
+  gap: var(--spacing-xs);
+}
+
+/*
+  回答ボタン (.answer-btn) は JavaScript で生成される。
+  ここで見た目を定義しておく。
+*/
+.answer-btn {
+  display: block;
+  width: 100%;
+  padding: 1em 1.5em;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition), transform 0.2s ease;
+  outline: none;
+  appearance: none;
+
+  /* 下から滑り込むアニメーションの初期状態 */
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* JavaScript が .visible クラスを付けるとボタンが現れる */
+.answer-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.answer-btn:hover {
+  background: var(--color-hover);
+  border-color: var(--color-text-muted);
+  color: var(--color-accent);
+}
+
+/* ===================================
+   結果画面
+   =================================== */
+
+/* 「あなたは」の小さいラベル */
+.result-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* タイプ名（「月猫」など） */
+.result-type {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 7vw, 3.5rem);
+  color: var(--color-accent);
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 一言コピー */
+.result-copy {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  line-height: 2.2;
+  margin-bottom: var(--spacing-lg);
+  padding-left: var(--spacing-sm);
+  border-left: 1px solid var(--color-border);
+  font-style: italic;
+}
+
+/* 詳細説明の全体コンテナ */
+.result-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* 各詳細セクション（特徴・他人からの見え方・本人とのズレ） */
+.result-section {
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+}
+
+/* セクション見出し（「特徴」など） */
+.section-heading {
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* セクション本文 */
+.result-section p {
+  font-size: 0.88rem;
+  line-height: 2;
+  color: var(--color-text);
+}
+
+/* ===================================
+   スマホ対応（スクリーン幅が狭い場合）
+   =================================== */
+
+@media (max-width: 480px) {
+  .screen {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .container {
+    padding: var(--spacing-md) 0;
+  }
+
+  .result-section {
+    padding: var(--spacing-sm);
+  }
+}
+
+/* ===================================
+   スクロールバーのカスタマイズ
+   =================================== */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+}
